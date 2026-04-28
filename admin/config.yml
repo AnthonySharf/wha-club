@@ -1,0 +1,31 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images"
+public_folder: "/images"
+
+collections:
+  - name: "resources"
+    label: "Resources"
+    folder: "_data/resources"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "date" }
+      - { label: "Type", name: "type", widget: "select", options: ["Slides", "Video"] }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Link URL", name: "link", widget: "string" }
+
+  - name: "articles"
+    label: "Articles"
+    folder: "_data/articles"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Source", name: "source", widget: "string" }
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Type", name: "type", widget: "select", options: ["Study", "Podcast", "Article", "Other"] }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Link URL", name: "link", widget: "string" }
