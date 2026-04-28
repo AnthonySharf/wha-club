@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Articles — Women's Health Advocacy</title>
+<meta name="description" content="Studies, podcasts, and articles curated by club members on women's health and healthcare equity." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<style>
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+.filter-btn {
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1.5px solid var(--border-blush);
+  background: var(--white);
+  color: var(--text-muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 21px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.filter-btn:hover {
+  border-color: var(--soft-rose);
+  color: var(--deep-rose);
+}
+.filter-btn.active {
+  background: var(--deep-rose);
+  border-color: var(--deep-rose);
+  color: var(--white);
+}
+
+/* ===== ARTICLE GRID ===== */
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+@media (max-width: 900px) {
+  .article-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 560px) {
+  .article-grid { grid-template-columns: 1fr; }
+}
+
+.article-card {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 36px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.article-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.article-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.article-source {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.article-card h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 26px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+.article-card p {
+  font-size: 21px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  flex: 1;
+}
+.article-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 21px;
+  font-weight: 500;
+  color: var(--deep-rose);
+  margin-top: 4px;
+  transition: gap 0.2s ease;
+}
+.article-card-link:hover { gap: 10px; color: var(--primary-rose); }
+
+/* Type pill colors */
+.badge-study  { background: #FDE8EE; color: #7a1a3a; }
+.badge-podcast { background: #EDE8FD; color: #3a1a7a; }
+.badge-article { background: #E8F4FD; color: #1a3a7a; }
+.badge-report  { background: #E8FDE8; color: #1a5a1a; }
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 72px 32px;
+  color: var(--text-muted);
+}
+.empty-state p { font-size: 24px; margin-top: 8px; font-weight: 300; }
+
+.articles-section {
+  background: var(--white);
+  padding: 80px 80px 120px;
+}
+
+/* ===== CALLOUT ===== */
+.suggest-callout {
+  margin-top: 80px;
+  background: var(--blush);
+  border-radius: 20px;
+  padding: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.suggest-callout h3 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+.suggest-callout h3 em { font-style: italic; color: var(--deep-rose); }
+.suggest-callout p {
+  font-size: 23px;
+  color: var(--text-muted);
+  font-weight: 300;
+  max-width: 600px;
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Women's Health Advocacy</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="articles.html" class="active">Articles</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="nonprofit.html">Nonprofit</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <header class="page-header fade-up">
+    <div class="container">
+      <h1>The research behind <em>the work.</em></h1>
+    </div>
+  </header>
+
+  <section class="articles-section">
+    <div class="container">
+
+      <!-- Filter bar -->
+      <div class="filter-bar" id="filterBar" role="group" aria-label="Filter by type">
+        <button class="filter-btn active" data-filter="all">All</button>
+      </div>
+
+      <!-- Article grid -->
+      <div class="article-grid" id="articleGrid">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Suggest callout -->
+      <div class="suggest-callout">
+        <div>
+          <h3>Found something <em>worth sharing?</em></h3>
+          <p>Send a link to any officer and we'll review it for inclusion in the next update.</p>
+        </div>
+        <a href="contact.html" class="btn btn-filled">Suggest a Source</a>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Women's Health Advocacy</div>
+      <p class="footer-tag">Women's Health Advocacy Club at Westview High School. Education, research, and community action for equity in women's healthcare.</p>
+    </div>
+    <div class="footer-meta">
+      <div>&#169; 2026 Women's Health Advocacy</div>
+      <div style="margin-top:6px;">
+        <a href="contact.html">Contact</a>
+        <a href="admin.html">Admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="nav.js"></script>
+<script>
+(function () {
+  const typeClass = {
+    Study:   'badge-study',
+    Podcast: 'badge-podcast',
+    Article: 'badge-article',
+    Report:  'badge-report'
+  };
+
+  const articles = (window.WHA_DATA || {}).articles || [];
+  const grid = document.getElementById('articleGrid');
+  const filterBar = document.getElementById('filterBar');
+
+  // Build type filter buttons
+  const types = [...new Set(articles.map(a => a.type))];
+  types.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.filter = t;
+    btn.textContent = t;
+    filterBar.appendChild(btn);
+  });
+
+  function badgeClass(type) {
+    return typeClass[type] || 'badge-line';
+  }
+
+  function renderCards(filter) {
+    grid.innerHTML = '';
+    const filtered = filter === 'all' ? articles : articles.filter(a => a.type === filter);
+
+    if (filtered.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.innerHTML = '<strong>No articles found.</strong><p>Try a different filter.</p>';
+      grid.appendChild(empty);
+      return;
+    }
+
+    filtered.forEach(a => {
+      const card = document.createElement('article');
+      card.className = 'article-card';
+      card.innerHTML = `
+        <div class="article-card-top">
+          <span class="article-source">${a.source || ''}</span>
+          <span class="badge ${badgeClass(a.type)}">${a.type}</span>
+        </div>
+        <h3>${a.title}</h3>
+        <p>${a.description || ''}</p>
+        <a class="article-card-link" href="${a.link || '#'}" target="_blank" rel="noopener">
+          Read source <span aria-hidden="true">&#8594;</span>
+        </a>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  renderCards('all');
+
+  filterBar.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCards(btn.dataset.filter);
+  });
+})();
+</script>
+</body>
+</html>

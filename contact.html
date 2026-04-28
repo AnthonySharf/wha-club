@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Contact — Women's Health Advocacy</title>
+<meta name="description" content="Reach an officer or let us know you're interested in joining Women's Health Advocacy at Westview High School." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<style>
+/* ===== CONTACT LAYOUT ===== */
+.contact-section {
+  background: var(--white);
+  padding: 80px 80px 120px;
+}
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+}
+
+/* ===== CONTACT METHODS ===== */
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contact-method {
+  background: var(--blush);
+  border-radius: 16px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transition: box-shadow 0.2s ease;
+}
+.contact-method:hover {
+  box-shadow: var(--shadow-card);
+}
+.contact-method-icon {
+  width: 64px; height: 64px;
+  border-radius: 14px;
+  background: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 33px;
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(166,50,86,0.08);
+}
+.contact-method-body {
+  flex: 1;
+  min-width: 0;
+}
+.contact-method-label {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: 4px;
+}
+.contact-method-value {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--text);
+  word-break: break-all;
+}
+.contact-method-value a {
+  color: var(--text);
+  text-decoration: none;
+}
+.contact-method-value a:hover { color: var(--deep-rose); }
+
+.copy-btn {
+  background: var(--white);
+  border: 1.5px solid var(--border-blush);
+  color: var(--deep-rose);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.copy-btn:hover {
+  background: var(--deep-rose);
+  border-color: var(--deep-rose);
+  color: var(--white);
+}
+.copy-btn.copied {
+  background: #2d7a3a;
+  border-color: #2d7a3a;
+  color: var(--white);
+}
+
+.ig-link {
+  color: var(--deep-rose);
+  text-decoration: none;
+  font-weight: 500;
+}
+.ig-link:hover { color: var(--primary-rose); text-decoration: underline; text-underline-offset: 3px; }
+
+.contact-note {
+  margin-top: 24px;
+  font-size: 21px;
+  color: var(--text-soft);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+/* ===== INTEREST FORM ===== */
+.form-card {
+  background: var(--blush);
+  border-radius: 20px;
+  padding: 56px;
+}
+.form-card h2 {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+.form-card h2 em { font-style: italic; color: var(--deep-rose); }
+.form-card .form-desc {
+  font-size: 23px;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.field label {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1.5px solid var(--border-blush);
+  border-radius: 10px;
+  background: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 23px;
+  color: var(--text);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  appearance: none;
+}
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: var(--primary-rose);
+  box-shadow: 0 0 0 3px rgba(212, 84, 122, 0.12);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.field select {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23A63256' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.form-submit {
+  width: 100%;
+  padding: 18px;
+  background: var(--deep-rose);
+  color: var(--white);
+  border: 0;
+  border-radius: 999px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 23px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 8px;
+}
+.form-submit:hover {
+  background: #8a2746;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(166, 50, 86, 0.25);
+}
+.form-submit:disabled {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Form success state */
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 32px 0;
+}
+.form-success-icon {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--deep-rose);
+  color: var(--white);
+  font-size: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.form-success h3 { font-size: 33px; margin-bottom: 8px; }
+.form-success p { font-size: 23px; color: var(--text-muted); font-weight: 300; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Women's Health Advocacy</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="contact.html" class="active">Contact</a></li>
+      <li><a href="nonprofit.html">Nonprofit</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+
+  <header class="page-header fade-up">
+    <div class="container">
+      <h1>Reach an <em>officer.</em></h1>
+    </div>
+  </header>
+
+  <section class="contact-section">
+    <div class="container contact-grid">
+
+      <!-- Left: contact methods -->
+      <div>
+        <span class="eyebrow">Get in Touch</span>
+        <div class="contact-methods" style="margin-top: 24px;">
+
+          <!-- Email -->
+          <div class="contact-method">
+            <div class="contact-method-icon" aria-hidden="true">✉</div>
+            <div class="contact-method-body">
+              <div class="contact-method-label">Email</div>
+              <div class="contact-method-value" id="emailValue">wha.westview@gmail.com</div>
+            </div>
+            <button class="copy-btn" id="copyEmailBtn" aria-label="Copy email address">Copy</button>
+          </div>
+
+          <!-- Instagram -->
+          <div class="contact-method">
+            <div class="contact-method-icon" aria-hidden="true">📸</div>
+            <div class="contact-method-body">
+              <div class="contact-method-label">Instagram</div>
+              <div class="contact-method-value">
+                <a class="ig-link" href="https://www.instagram.com/w.h.a_clubwv" target="_blank" rel="noopener">@w.h.a_clubwv</a>
+              </div>
+            </div>
+            <a class="copy-btn" href="https://www.instagram.com/w.h.a_clubwv" target="_blank" rel="noopener" style="text-decoration:none;">Follow</a>
+          </div>
+
+        </div>
+
+        <p class="contact-note">
+          We meet every Monday at lunch in Room P101 — stop by anytime.
+        </p>
+
+        <!-- Officers -->
+        <div style="margin-top: 40px;">
+          <span class="eyebrow">Officers</span>
+          <div id="officerList" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;"></div>
+        </div>
+      </div>
+
+      <!-- Right: interest form -->
+      <div>
+        <div class="form-card">
+          <h2>Express <em>interest.</em></h2>
+          <p class="form-desc">Fill this out and we'll add you to our mailing list and let you know about upcoming meetings.</p>
+
+          <form id="interestForm" novalidate>
+            <div class="field">
+              <label for="fname">Full Name</label>
+              <input type="text" id="fname" name="fname" placeholder="Your name" required autocomplete="name" />
+            </div>
+            <div class="field">
+              <label for="email">School Email</label>
+              <input type="email" id="email" name="email" placeholder="you@students.puhsd.org" required autocomplete="email" />
+            </div>
+            <div class="field">
+              <label for="grade">Grade</label>
+              <select id="grade" name="grade" required>
+                <option value="" disabled selected>Select your grade</option>
+                <option value="9">9th Grade</option>
+                <option value="10">10th Grade</option>
+                <option value="11">11th Grade</option>
+                <option value="12">12th Grade</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="interest">What draws you to WHA? <span style="font-weight:300;text-transform:none;letter-spacing:0;">(optional)</span></label>
+              <textarea id="interest" name="interest" placeholder="A topic you care about, a question you have, anything..."></textarea>
+            </div>
+            <button type="submit" class="form-submit" id="formSubmit">Send Interest</button>
+          </form>
+
+          <div class="form-success" id="formSuccess">
+            <div class="form-success-icon" aria-hidden="true">&#10003;</div>
+            <h3>You're on the list.</h3>
+            <p>We'll send meeting details your way. See you soon.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">Women's Health Advocacy</div>
+      <p class="footer-tag">Women's Health Advocacy Club at Westview High School. Education, research, and community action for equity in women's healthcare.</p>
+    </div>
+    <div class="footer-meta">
+      <div>&#169; 2025 WHA &#183; Westview High School</div>
+      <div style="margin-top:6px;">
+        <a href="contact.html">Contact</a>
+        <a href="admin.html">Admin</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="data.js"></script>
+<script src="nav.js"></script>
+<script>
+(function () {
+  // ---- Toast helper ----
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  function showToast(msg) {
+    clearTimeout(toastTimer);
+    toast.textContent = msg;
+    toast.classList.add('show');
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+  }
+
+  // ---- Copy email ----
+  const copyBtn = document.getElementById('copyEmailBtn');
+  const emailVal = document.getElementById('emailValue').textContent.trim();
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(emailVal).then(() => {
+      copyBtn.textContent = 'Copied!';
+      copyBtn.classList.add('copied');
+      showToast('Email copied to clipboard');
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy';
+        copyBtn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      showToast('Could not copy — try manually selecting the address');
+    });
+  });
+
+  // ---- Officers ----
+  const officers = (window.WHA_DATA || {}).officers || [];
+  const officerList = document.getElementById('officerList');
+  officers.forEach(o => {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex;align-items:center;gap:14px;';
+    const avatarContent = o.photo
+      ? `<img src="${o.photo}" alt="${o.name}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;" />`
+      : o.name.split(' ').map(w => w[0]).join('').slice(0,2);
+    div.innerHTML = `
+      <div style="width:56px;height:56px;border-radius:50%;background:radial-gradient(circle at 30% 30%,var(--soft-rose),var(--primary-rose));flex-shrink:0;overflow:hidden;">${avatarContent}</div>
+      <div>
+        <div style="font-size:23px;font-weight:500;color:var(--text);">${o.name}</div>
+        <div style="font-size:20px;color:var(--text-muted);">${o.role}</div>
+      </div>
+    `;
+    officerList.appendChild(div);
+  });
+
+  // ---- Interest form ----
+  const form = document.getElementById('interestForm');
+  const formSuccess = document.getElementById('formSuccess');
+  const submitBtn = document.getElementById('formSubmit');
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Opening email…';
+
+    const name    = document.getElementById('fname').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const grade   = document.getElementById('grade').value;
+    const interest = document.getElementById('interest').value.trim();
+
+    const subject = encodeURIComponent('WHA Interest Form — ' + name);
+    const body = encodeURIComponent(
+      'Name: ' + name + '\n' +
+      'Email: ' + email + '\n' +
+      'Grade: ' + grade + '\n' +
+      (interest ? 'What draws you to WHA:\n' + interest : '')
+    );
+
+    window.location.href = 'mailto:womenshealthadvocacyclubwvh@gmail.com?subject=' + subject + '&body=' + body;
+
+    setTimeout(() => {
+      form.style.display = 'none';
+      formSuccess.style.display = 'block';
+    }, 600);
+  });
+})();
+</script>
+</body>
+</html>

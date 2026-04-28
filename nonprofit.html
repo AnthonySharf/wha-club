@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nonprofit — Women's Health Advocacy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<style>
+html, body { height: 100%; background: var(--blush); }
+.np-wrap {
+  height: 100vh;
+  background: var(--blush);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 108px 64px 64px;
+  position: relative;
+  overflow: hidden;
+}
+.np-content {
+  text-align: center;
+  width: 100%;
+  max-width: 1100px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 0;
+}
+.np-content h1 {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(96px, 16vw, 200px);
+  line-height: 0.95;
+  color: var(--deep-rose);
+  margin-bottom: 40px;
+  letter-spacing: -0.03em;
+}
+.np-content p.lead {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  font-size: clamp(20px, 2.5vw, 28px);
+  color: var(--text-muted);
+  margin-bottom: 64px;
+  line-height: 1.5;
+  max-width: 600px;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--deep-rose);
+  font-size: 16px;
+  font-weight: 500;
+  padding: 14px 28px;
+  border: 1px solid var(--soft-rose);
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+.back-link:hover {
+  background: var(--deep-rose);
+  color: var(--white);
+  border-color: var(--deep-rose);
+}
+
+/* Decorative orbs */
+.np-orb {
+  position: absolute;
+  width: 70vw;
+  height: 70vw;
+  max-width: 900px;
+  max-height: 900px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(242, 167, 187, 0.5), transparent 65%);
+  filter: blur(60px);
+  z-index: 1;
+  pointer-events: none;
+}
+.np-orb.o1 { top: -20vh; left: -20vw; }
+.np-orb.o2 { bottom: -20vh; right: -20vw; background: radial-gradient(circle at 70% 70%, rgba(212, 84, 122, 0.35), transparent 65%); }
+
+.np-rings {
+  position: absolute;
+  width: min(80vw, 80vh);
+  height: min(80vw, 80vh);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+}
+.np-rings span {
+  position: absolute;
+  border: 1px solid var(--soft-rose);
+  opacity: 0.25;
+  border-radius: 50%;
+  inset: 0;
+  animation: ringPulse 4s ease-in-out infinite;
+}
+.np-rings span:nth-child(2) { inset: 12%; animation-delay: 0.5s; }
+.np-rings span:nth-child(3) { inset: 24%; animation-delay: 1s; }
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1); opacity: 0.25; }
+  50% { transform: scale(1.05); opacity: 0.45; }
+}
+
+/* Bottom bar */
+.np-bottom {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 32px;
+}
+.np-bottom-logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 18px;
+  color: var(--text-soft);
+  letter-spacing: 0.04em;
+}
+.np-bottom-copy {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: var(--text-soft);
+  font-weight: 300;
+}
+
+@media (max-width: 600px) {
+  .np-wrap { padding: 72px 32px 40px; }
+  .np-bottom { flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Women's Health Advocacy</a>
+    <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="articles.html">Articles</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="nonprofit.html" class="active">Nonprofit</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main style="padding-top:0;">
+  <div class="np-wrap grain">
+    <div class="np-orb o1"></div>
+    <div class="np-orb o2"></div>
+    <div class="np-rings" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="np-content">
+      <h1 class="fade-up">Coming Soon.</h1>
+      <p class="lead fade-up d1">We're building something bigger. Stay tuned.</p>
+      <a href="index.html" class="back-link fade-up d2">← Back to Home</a>
+    </div>
+    <div class="np-bottom fade-up d3">
+      <span class="np-bottom-logo">Women's Health Advocacy</span>
+      <span class="np-bottom-copy">Westview High School</span>
+    </div>
+  </div>
+</main>
+
+<script src="nav.js"></script>
+</body>
+</html>

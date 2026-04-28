@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(python3 *)",
+      "Bash(cp \"C:\\\\Users\\\\antho\\\\.claude\\\\projects\\\\C--Users-antho-OneDrive-Desktop-WHA\\\\22a157ab-0558-4243-92e8-924f82eed564\\\\tool-results\\\\webfetch-1777350902252-b99xre.bin\" /tmp/design.gz)",
+      "Read(//c/tmp/**)",
+      "Bash(gunzip -f design.gz)",
+      "Read(//tmp/**)",
+      "Bash(xxd /tmp/design)",
+      "Bash(mkdir -p design_extracted)",
+      "Bash(tar -xf design -C design_extracted)",
+      "Read(//c/Users/antho/Downloads/**)",
+      "Read(//c/Users/antho/Downloads//**)",
+      "Bash(cp \"/c/Users/antho/Downloads/LisaB.png\" \"/c/Users/antho/OneDrive/Desktop/WHA/images/LisaB.png\")",
+      "Bash(cp \"/c/Users/antho/Downloads/Dasha.png\" \"/c/Users/antho/OneDrive/Desktop/WHA/images/Dasha.png\")",
+      "Bash(cp \"/c/Users/antho/Downloads/Audrey.png\" \"/c/Users/antho/OneDrive/Desktop/WHA/images/Audrey.png\")",
+      "Bash(cp \"/c/Users/antho/Downloads/Madelyn.png\" \"/c/Users/antho/OneDrive/Desktop/WHA/images/Madelyn.png\")"
+    ]
+  }
+}
