@@ -586,5 +586,22 @@ body:has(.hero) main { padding-top: 0; }
 </footer>
 
 <script src="nav.js"></script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.href = "/admin/";
+        });
+      }
+    });
+  }
+
+  // Handle invite/recovery tokens in URL hash
+  if (window.location.hash && window.location.hash.includes('invite_token')) {
+    window.netlifyIdentity && window.netlifyIdentity.open();
+  }
+</script>
 </body>
 </html>

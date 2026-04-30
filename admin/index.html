@@ -8,18 +8,21 @@
     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body>
-        <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
             <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
     <script>
-    if (window.netlifyIdentity) {
+      if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {
-        if (!user) {
+          if (!user) {
             window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
+              document.location.href = "/admin/";
             });
-        }
+          }
         });
-    }
+      }
+
+      if (window.location.hash && window.location.hash.includes('invite_token')) {
+        window.netlifyIdentity && window.netlifyIdentity.open();
+      }
     </script>
   </body>
 </html>
