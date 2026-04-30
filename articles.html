@@ -220,44 +220,98 @@
   </div>
 </footer>
 
-<script src="data.js"></script>
 <script src="nav.js"></script>
 <script>
 (function () {
+  // ── Helpers ──────────────────────────────────────────────────────────────
   const typeClass = {
     Study:   'badge-study',
     Podcast: 'badge-podcast',
     Article: 'badge-article',
     Report:  'badge-report'
   };
+  function badgeClass(type) { return typeClass[type] || 'badge-line'; }
 
-  const articles = (window.WHA_DATA || {}).articles || [];
-  const grid = document.getElementById('articleGrid');
-  const filterBar = document.getElementById('filterBar');
-
-  // Build type filter buttons
-  const types = [...new Set(articles.map(a => a.type))];
-  types.forEach(t => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn';
-    btn.dataset.filter = t;
-    btn.textContent = t;
-    filterBar.appendChild(btn);
-  });
-
-  function badgeClass(type) {
-    return typeClass[type] || 'badge-line';
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
+  // Regex-based YAML frontmatter parser — handles quoted and bare values
+  function parseFrontmatter(text) {
+    const block = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    if (!block) return {};
+    const obj = {};
+    for (const line of block[1].split('\n')) {
+      const m = line.match(/^(\w+):\s*(.*)/);
+      if (!m) continue;
+      let val = m[2].trim();
+      if ((val.startsWith('"') && val.endsWith('"')) ||
+          (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      obj[m[1]] = val;
+    }
+    return obj;
+  }
+
+  // ── Data fetching ─────────────────────────────────────────────────────────
+  const CONTENTS_API = 'https://api.github.com/repos/AnthonySharf/wha-westview/contents/_data/articles';
+  const grid = document.getElementById('articleGrid');
+  const filterBar = document.getElementById('filterBar');
+  let articles = [];
+
+  grid.innerHTML = '<div class="empty-state"><p>Loading articles…</p></div>';
+
+  fetch(CONTENTS_API)
+    .then(res => {
+      if (!res.ok) throw new Error('listing failed');
+      return res.json();
+    })
+    .then(files => {
+      const mdFiles = Array.isArray(files) ? files.filter(f => f.name.endsWith('.md')) : [];
+      if (mdFiles.length === 0) { showEmpty(); return null; }
+      return Promise.all(mdFiles.map(f => fetch(f.download_url).then(r => {
+        if (!r.ok) throw new Error('file fetch failed');
+        return r.text();
+      })));
+    })
+    .then(texts => {
+      if (!texts) return;
+      articles = texts
+        .map(parseFrontmatter)
+        .filter(a => a.title);
+      buildFilters();
+      renderCards('all');
+    })
+    .catch(() => {
+      grid.innerHTML = '<div class="empty-state"><strong>Could not load articles.</strong><p>Please try again later.</p></div>';
+    });
+
+  // ── Filter buttons ────────────────────────────────────────────────────────
+  function buildFilters() {
+    const types = [...new Set(articles.map(a => a.type).filter(Boolean))];
+    types.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.filter = t;
+      btn.textContent = t;
+      filterBar.appendChild(btn);
+    });
+  }
+
+  function showEmpty() {
+    grid.innerHTML = '<div class="empty-state"><strong>No articles yet.</strong><p>No articles yet — check back soon.</p></div>';
+  }
+
+  // ── Card rendering ────────────────────────────────────────────────────────
   function renderCards(filter) {
     grid.innerHTML = '';
     const filtered = filter === 'all' ? articles : articles.filter(a => a.type === filter);
 
     if (filtered.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'empty-state';
-      empty.innerHTML = '<strong>No articles found.</strong><p>Try a different filter.</p>';
-      grid.appendChild(empty);
+      showEmpty();
       return;
     }
 
@@ -266,20 +320,18 @@
       card.className = 'article-card';
       card.innerHTML = `
         <div class="article-card-top">
-          <span class="article-source">${a.source || ''}</span>
-          <span class="badge ${badgeClass(a.type)}">${a.type}</span>
+          <span class="article-source">${esc(a.source)}</span>
+          <span class="badge ${badgeClass(a.type)}">${esc(a.type)}</span>
         </div>
-        <h3>${a.title}</h3>
-        <p>${a.description || ''}</p>
-        <a class="article-card-link" href="${a.link || '#'}" target="_blank" rel="noopener">
+        <h3>${esc(a.title)}</h3>
+        <p>${esc(a.description)}</p>
+        <a class="article-card-link" href="${esc(a.link || '#')}" target="_blank" rel="noopener">
           Read source <span aria-hidden="true">&#8594;</span>
         </a>
       `;
       grid.appendChild(card);
     });
   }
-
-  renderCards('all');
 
   filterBar.addEventListener('click', e => {
     const btn = e.target.closest('.filter-btn');

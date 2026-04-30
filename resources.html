@@ -184,10 +184,11 @@
 <div class="admin-banner" id="adminBanner" role="status" aria-label="Admin notice">
   <div class="admin-banner-left">
     <div class="admin-banner-icon" aria-hidden="true">★</div>
-    <span>Officer access — add or remove resources by editing <code>data.js</code>. Changes appear here automatically.</span>
+    <span>Officer access — add or remove resources via the <a href="admin/index.html">CMS</a>. New entries appear here automatically after the GitHub commit lands.</span>
   </div>
   <button class="admin-banner-close" id="adminBannerClose" aria-label="Dismiss banner">&times;</button>
 </div>
+
 
 <nav class="nav">
   <div class="nav-inner">
@@ -249,7 +250,6 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="data.js"></script>
 <script src="nav.js"></script>
 <script>
 (function () {
@@ -264,37 +264,91 @@
     sessionStorage.setItem('adminBannerDismissed', '1');
   });
 
-  // Type icons
+  // ── Helpers ──────────────────────────────────────────────────────────────
   const typeEmoji = { Slides: '📊', Video: '▶', Pamphlet: '📄', Reading: '📖', Link: '🔗' };
-  function iconFor(type) {
-    return typeEmoji[type] || '📎';
+  function iconFor(type) { return typeEmoji[type] || '📎'; }
+
+  function esc(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
-  // Build cards
-  const resources = (window.WHA_DATA || {}).resources || [];
+  // Regex-based YAML frontmatter parser — handles quoted and bare values
+  function parseFrontmatter(text) {
+    const block = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    if (!block) return {};
+    const obj = {};
+    for (const line of block[1].split('\n')) {
+      const m = line.match(/^(\w+):\s*(.*)/);
+      if (!m) continue;
+      let val = m[2].trim();
+      if ((val.startsWith('"') && val.endsWith('"')) ||
+          (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      obj[m[1]] = val;
+    }
+    return obj;
+  }
+
+  // ── Data fetching ─────────────────────────────────────────────────────────
+  const CONTENTS_API = 'https://api.github.com/repos/AnthonySharf/wha-westview/contents/_data/resources';
   const grid = document.getElementById('resourceGrid');
   const filterBar = document.getElementById('filterBar');
+  let resources = [];
 
-  // Collect unique types
-  const types = [...new Set(resources.map(r => r.type))];
-  types.forEach(t => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn';
-    btn.dataset.filter = t;
-    btn.textContent = t;
-    filterBar.appendChild(btn);
-  });
+  grid.innerHTML = '<div class="empty-state"><p>Loading resources…</p></div>';
 
-  // Render cards
+  fetch(CONTENTS_API)
+    .then(res => {
+      if (!res.ok) throw new Error('listing failed');
+      return res.json();
+    })
+    .then(files => {
+      const mdFiles = Array.isArray(files) ? files.filter(f => f.name.endsWith('.md')) : [];
+      if (mdFiles.length === 0) { showEmpty(); return null; }
+      return Promise.all(mdFiles.map(f => fetch(f.download_url).then(r => {
+        if (!r.ok) throw new Error('file fetch failed');
+        return r.text();
+      })));
+    })
+    .then(texts => {
+      if (!texts) return;
+      resources = texts
+        .map(parseFrontmatter)
+        .filter(r => r.title);
+      resources.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+      buildFilters();
+      renderCards('all');
+    })
+    .catch(() => {
+      grid.innerHTML = '<div class="empty-state"><strong>Could not load resources.</strong><p>Please try again later.</p></div>';
+    });
+
+  // ── Filter buttons ────────────────────────────────────────────────────────
+  function buildFilters() {
+    const types = [...new Set(resources.map(r => r.type).filter(Boolean))];
+    types.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.filter = t;
+      btn.textContent = t;
+      filterBar.appendChild(btn);
+    });
+  }
+
+  function showEmpty() {
+    grid.innerHTML = '<div class="empty-state"><strong>No resources yet.</strong><p>No resources yet — check back soon.</p></div>';
+  }
+
+  // ── Card rendering ────────────────────────────────────────────────────────
   function renderCards(filter) {
     grid.innerHTML = '';
     const filtered = filter === 'all' ? resources : resources.filter(r => r.type === filter);
 
     if (filtered.length === 0) {
-      const empty = document.createElement('div');
-      empty.className = 'empty-state';
-      empty.innerHTML = '<strong>No resources found.</strong><p>Check back after the next meeting.</p>';
-      grid.appendChild(empty);
+      showEmpty();
       return;
     }
 
@@ -303,13 +357,13 @@
       card.className = 'resource-card';
       card.innerHTML = `
         <div class="resource-card-top">
-          <span class="badge badge-line">${r.type}</span>
-          <span class="resource-date">${r.date || ''}</span>
+          <span class="badge badge-line">${esc(r.type)}</span>
+          <span class="resource-date">${esc(r.date)}</span>
         </div>
         <div class="type-icon" aria-hidden="true">${iconFor(r.type)}</div>
-        <h3>${r.title}</h3>
-        <p>${r.description || ''}</p>
-        <a class="resource-card-link" href="${r.link || '#'}" target="_blank" rel="noopener">
+        <h3>${esc(r.title)}</h3>
+        <p>${esc(r.description)}</p>
+        <a class="resource-card-link" href="${esc(r.link || '#')}" target="_blank" rel="noopener">
           Open resource <span aria-hidden="true">&#8594;</span>
         </a>
       `;
@@ -317,9 +371,6 @@
     });
   }
 
-  renderCards('all');
-
-  // Filter click handler
   filterBar.addEventListener('click', e => {
     const btn = e.target.closest('.filter-btn');
     if (!btn) return;
