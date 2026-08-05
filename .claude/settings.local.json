@@ -15,7 +15,14 @@
       "Bash(cp \"/c/Users/antho/Downloads/LisaB.png\" \"/c/Users/antho/OneDrive/Desktop/WHA/images/LisaB.png\")",
       "Bash(cp \"/c/Users/antho/Downloads/Dasha.png\" \"/c/Users/antho/OneDrive/Desktop/WHA/images/Dasha.png\")",
       "Bash(cp \"/c/Users/antho/Downloads/Audrey.png\" \"/c/Users/antho/OneDrive/Desktop/WHA/images/Audrey.png\")",
-      "Bash(cp \"/c/Users/antho/Downloads/Madelyn.png\" \"/c/Users/antho/OneDrive/Desktop/WHA/images/Madelyn.png\")"
+      "Bash(cp \"/c/Users/antho/Downloads/Madelyn.png\" \"/c/Users/antho/OneDrive/Desktop/WHA/images/Madelyn.png\")",
+      "Bash(magick --version)",
+      "Bash(ffmpeg -version)",
+      "Bash(mkdir -p \"C:/Users/antho/OneDrive/Desktop/WHA - Copy/images/hero\")",
+      "Bash(ffmpeg -i pic1.heic images/hero/hero-1.jpg -y)",
+      "Bash(ffmpeg -i pic2.heic images/hero/hero-2.jpg -y)",
+      "Bash(ffmpeg -i pic3.heic images/hero/hero-3.jpg -y)",
+      "Bash(wc -c \"C:/Users/antho/OneDrive/Desktop/WHA - Copy/images/hero/\"*.jpg)"
     ]
   }
 }

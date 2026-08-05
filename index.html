@@ -7,126 +7,290 @@
 <meta name="description" content="The Women's Health Advocacy Club at Westview High School. Education, research, and community action for equity in women's healthcare." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&family=La+Belle+Aurore&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 <style>
-/* Pull hero up past main's nav offset */
+/* Hero starts below the floating pill */
 body:has(.hero) main { padding-top: 0; }
 
 /* ===== HERO ===== */
 .hero {
-  min-height: 100vh;
-  background: var(--blush);
-  padding: clamp(3.375rem, 6vw, 5rem) clamp(1.5rem, 5vw, 5rem) clamp(2rem, 4vw, 3rem);
-  display: flex;
-  align-items: center;
+  height: 100vh;
+  min-height: 38rem;
   position: relative;
   overflow: hidden;
-}
-.hero-grid {
-  max-width: var(--max-w);
-  width: 100%;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 58%) minmax(0, 1fr);
-  gap: 5rem;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-.hero-text { max-width: 51.25rem; }
-.hero h1 {
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 1.0;
-  letter-spacing: -0.02em;
-  margin-bottom: 2rem;
-}
-.hero h1 em {
-  font-style: italic;
-  color: var(--deep-rose);
-}
-.hero p.lead {
-  font-size: clamp(1rem, 1.5vw, 1.375rem);
-  font-weight: 300;
-  color: var(--text-muted);
-  max-width: 40rem;
-  margin-bottom: 2.75rem;
-  line-height: 1.55;
-}
-.hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
-
-.hero-meta {
-  margin-top: 3.5rem;
   display: flex;
-  gap: 2.25rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-.hero-meta-item {
-  display: flex;
-  flex-direction: column;
-}
-.hero-fact {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  letter-spacing: 0.01em;
-}
-.hero-divider-vert {
-  width: 1px;
-  height: 2.25rem;
-  background: var(--soft-rose);
-  opacity: 0.6;
+  align-items: flex-start;
+  background: transparent;
 }
 
-/* Hero photo */
-.hero-photo-wrap {
-  margin-left: auto;
-  width: 100%;
-  max-width: 30rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+/* Carousel slides — stacked, only .active is visible */
+.hero-slides {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
 }
-.hero-photo-frame {
-  position: relative;
-  width: 100%;
-  height: 37.5rem;
-  border-radius: 1.25rem;
-  overflow: hidden;
-}
-.hero-photo-frame img {
+.hero-slide {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center top;
-  display: block;
+  object-position: center;
+  opacity: 0;
+  transition: opacity 1.2s ease;
 }
-.hero-photo-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-color: #F2A7BB;
-  opacity: 0.15;
-  mix-blend-mode: multiply;
-  pointer-events: none;
-  border-radius: 1.25rem;
-}
-.hero-photo-caption {
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  font-size: 0.875rem;
-  color: var(--text-soft);
-  text-align: center;
-  letter-spacing: 0.02em;
+.hero-slide.active {
+  opacity: 1;
 }
 
+/* Gradient overlay — left-to-right, darkest behind text */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.67) 0%,
+    rgba(0, 0, 0, 0.37) 50%,
+    rgba(0, 0, 0, 0.10) 80%
+  );
+  pointer-events: none;
+}
+
+/* Dot indicators */
+.hero-indicators {
+  position: absolute;
+  bottom: 2.5rem;
+  right: 2.5rem;
+  z-index: 3;
+  display: flex;
+  gap: 0.5rem;
+}
+.hero-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.4);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.hero-dot.active {
+  background: var(--rose, #d96c88);
+  transform: scale(1.3);
+}
+.hero-dot:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+/* Content block — text starts below the floating pill nav */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  /* top padding = pill-top(1.25rem) + pill-height(5rem) + breathing room(2rem) */
+  padding: 6.5rem clamp(2rem, 6vw, 7rem) clamp(3rem, 7vh, 6rem) clamp(1rem, 3vw, 4rem);
+  max-width: 70rem;
+  width: 100%;
+}
+
+/* Headline — DM Serif Display with one La Belle Aurore script word */
+.hero-headline {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(3.25rem, 6.5vw, 6rem);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  margin-bottom: 0rem;
+}
+
+.hl-serif { display: block; letter-spacing: 0.05em; }
+
+/* "believed." — the word central to WHA's mission (patients not believed by doctors).
+   La Belle Aurore script, amber so it reads distinctly against both dark overlay and white type. */
+.hl-script {
+  display: block;
+  font-family: 'La Belle Aurore', cursive;
+  font-style: normal;
+  font-size: clamp(4rem, 8vw, 7.5rem);
+  font-weight: 400;
+  color: var(--white);
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  margin-top: -0.2em;
+}
+
+.hero-lead {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  font-weight: 300;
+  color: #ffffff;
+  max-width: 38rem;
+  line-height: 1.65;
+  margin-bottom: 2.25rem;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+
+/* Hero-specific button variants — designed for dark photo background */
+.btn-hero-filled {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.1rem 2.2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.19rem;
+  font-weight: 500;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  line-height: 1;
+  background: #ffffff;
+  color: #000000;
+  border: 1.5px solid #ffffff;
+}
+.btn-hero-filled:hover {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--white);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(235, 158, 81, 0.38);
+}
+
+.btn-hero-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.1rem 2.2rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.19rem;
+  font-weight: 500;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  line-height: 1;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  border: 1.5px solid rgba(255, 255, 255, 0.42);
+}
+.btn-hero-outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  border-color: rgba(255, 255, 255, 0.72);
+  transform: translateY(-1px);
+}
+
+.hero-meta {
+  display: flex;
+  gap: 1.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.hero-fact {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.52);
+  letter-spacing: -0.03em;
+}
+.hero-divider-vert {
+  width: 1px;
+  height: 1.25rem;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+
 @media (max-width: 880px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 3.5rem; }
-  .hero-photo-wrap { max-width: 21.25rem; margin: 0 auto; }
-  .hero-photo-frame { height: 26.25rem; }
-  .hero { min-height: auto; padding: 6.875rem 2rem 5rem; }
+  .hero { height: 100vh; }
+  .hero-content { padding-top: 8rem; }
+  .hero-indicators { bottom: 2rem; }
+}
+@media (max-width: 600px) {
+  .hero { height: 100vh; min-height: 42rem; }
+  .hero-content { padding-top: 7.5rem; }
+  .hero-headline { font-size: clamp(2.25rem, 8vw, 3.5rem); }
+  .hl-script { font-size: clamp(3rem, 10vw, 4.5rem); }
+  .hero-lead { font-size: 1rem; }
+  .hero-indicators { right: 1.5rem; }
+}
+
+/* ===== STATEMENT CARD ===== */
+.statement-wrap {
+  padding: clamp(2rem, 5vw, 4rem) 1.25rem;
+  background: var(--white);
+}
+.statement-card {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  height: clamp(28rem, 70vw, 52rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.statement-card__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.statement-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.52);
+}
+.statement-card__text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: clamp(2rem, 5vw, 4rem);
+  max-width: 54rem;
+}
+.statement-card__headline {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2rem, 4vw, 3.45rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+.statement-card__body {
+  font-family: 'DM Sans', sans-serif;
+  font-size: clamp(1.15rem, 1.6vw, 1.38rem);
+  font-weight: 300;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.7;
+  max-width: 36rem;
+  margin: 0 auto 1rem;
+}
+.statement-card__source {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.02em;
+}
+@media (max-width: 880px) {
+  .statement-card { height: auto; min-height: 20rem; }
+  .statement-card__headline { font-size: clamp(1.73rem, 5vw, 2.3rem); }
+}
+@media (max-width: 600px) {
+  .statement-wrap { padding: 1.5rem 1rem; }
+  .statement-card { border-radius: 18px; }
+  .statement-card__headline { font-size: clamp(1.44rem, 6vw, 2rem); }
+  .statement-card__body { font-size: 1.09rem; }
 }
 
 /* ===== PURPOSE ===== */
@@ -144,7 +308,7 @@ body:has(.hero) main { padding-top: 0; }
   margin-bottom: 1rem;
   line-height: 1.05;
 }
-.purpose h2 em { font-style: italic; color: var(--deep-rose); }
+.purpose h2 em { font-style: italic; color: var(--rose); }
 .purpose-intro {
   font-size: 1.625rem;
   color: var(--text-muted);
@@ -160,14 +324,14 @@ body:has(.hero) main { padding-top: 0; }
 }
 .problem-list li {
   padding-left: 1.5rem;
-  border-left: 2px solid var(--soft-rose);
+  border-left: 2px solid var(--rose-200);
 }
 .problem-list strong {
   display: block;
   font-family: 'DM Sans', sans-serif;
   font-size: 1.6875rem;
   font-weight: 500;
-  color: var(--deep-rose);
+  color: var(--rose);
   margin-bottom: 0.375rem;
 }
 .problem-list p {
@@ -177,7 +341,7 @@ body:has(.hero) main { padding-top: 0; }
 }
 
 .who-card {
-  background: var(--blush);
+  background: var(--rose-50);
   border-radius: 1.5rem;
   padding: 3.5rem;
 }
@@ -192,7 +356,7 @@ body:has(.hero) main { padding-top: 0; }
   margin-bottom: 2rem;
 }
 .who-card p.who-desc .arrow {
-  color: var(--deep-rose);
+  color: var(--rose);
   font-weight: 500;
   margin: 0 0.25rem;
   font-style: italic;
@@ -216,7 +380,7 @@ body:has(.hero) main { padding-top: 0; }
   width: 7.5rem;
   height: 7.5rem;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, var(--soft-rose), var(--primary-rose));
+  background: radial-gradient(circle at 30% 30%, var(--rose-200), var(--rose));
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -247,141 +411,99 @@ body:has(.hero) main { padding-top: 0; }
 
 /* ===== WHAT WE DO ===== */
 .what {
-  background: var(--blush);
+  background: var(--white);
 }
 .what-head {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  margin-bottom: 3.5rem;
-  gap: 2rem;
-  flex-wrap: wrap;
+  margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
 }
 .what-head h2 {
   font-size: clamp(2rem, 4vw, 4.5rem);
   line-height: 1.05;
-  max-width: 43.75rem;
 }
-.what-head h2 em { font-style: italic; color: var(--deep-rose); }
-.what-head p {
-  font-size: 1.5rem;
-  color: var(--text-muted);
-  max-width: 30rem;
-  font-weight: 300;
-}
-
-.what-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.75rem;
-}
-.activity {
-  background: var(--white);
-  border-radius: 1.125rem;
-  padding: 2.75rem 2.25rem;
-  box-shadow: var(--shadow-card);
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.activity:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-card-hover);
-}
-.activity-icon {
-  width: 3rem; height: 3rem;
-  border-radius: 0.875rem;
-  background: var(--blush);
+.what-head h2 em { font-style: italic; color: var(--rose); }
+.solutions-head {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 2.5rem;
+}
+.solutions-head .officer-pin {
   position: relative;
-}
-.activity-icon::before, .activity-icon::after {
-  content: "";
-  position: absolute;
-}
-.icon-meet::before {
-  width: 22px; height: 22px;
-  border: 2px solid var(--deep-rose);
-  border-radius: 50%;
-}
-.icon-meet::after {
-  width: 14px; height: 14px;
-  border: 2px solid var(--primary-rose);
-  border-radius: 50%;
-  top: 18px; left: 22px;
-  background: var(--blush);
-}
-.icon-pamphlet::before {
-  width: 22px; height: 28px;
-  background: var(--deep-rose);
-  border-radius: 2px;
-  transform: rotate(-6deg);
-  left: 12px;
-}
-.icon-pamphlet::after {
-  width: 22px; height: 28px;
-  background: var(--soft-rose);
-  border-radius: 2px;
-  transform: rotate(6deg);
-  left: 16px; top: 12px;
-}
-.icon-speaker::before {
-  width: 0; height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 16px solid var(--deep-rose);
-  left: 12px; top: 14px;
-}
-.icon-speaker::after {
-  width: 16px; height: 16px;
-  border: 2px solid var(--primary-rose);
-  border-left: 0;
-  border-radius: 0 50% 50% 0;
-  left: 22px; top: 14px;
-}
-.icon-partner::before {
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  background: var(--deep-rose);
-  left: 8px; top: 14px;
-}
-.icon-partner::after {
-  width: 18px; height: 18px;
-  border-radius: 50%;
-  background: var(--soft-rose);
-  left: 22px; top: 14px;
+  flex-shrink: 0;
 }
 
-.activity h3 {
+/* 3-col color card grid */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.pillar-card {
+  border-radius: 28px;
+  padding: clamp(1.75rem, 2.5vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  min-height: 440px;
+}
+.pillar-card.card-rose      { background: #d96c88; }
+.pillar-card.card-amber     { background: #eb9e51; }
+.pillar-card.card-rose-deep { background: #b84d6e; }
+
+.pillar-icon { flex-shrink: 0; }
+
+.pillar-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+  text-align: center;
+  align-items: center;
+}
+.pillar-text h3 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.25rem, 3.5vw, 3.25rem);
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.1;
+  margin: 0;
+}
+.pillar-text p {
   font-family: 'DM Sans', sans-serif;
-  font-size: 1.8125rem;
-  font-weight: 500;
-  color: var(--text);
-  letter-spacing: -0.005em;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem);
+  line-height: 1.68;
+  color: rgba(255,255,255,0.88);
+  font-weight: 300;
+  margin: 0;
 }
-.activity p {
-  font-size: 1.4375rem;
-  line-height: 1.55;
-  color: var(--text-muted);
+.pillar-text p strong {
+  font-weight: 600;
+  color: #fff;
 }
-.activity .num {
-  position: absolute;
-  top: 1.5rem; right: 1.75rem;
-  font-family: 'DM Serif Display', serif;
-  font-style: italic;
-  color: var(--soft-rose);
-  font-size: 1.125rem;
-}
-.activity { position: relative; }
 
-@media (max-width: 1000px) {
-  .what-grid { grid-template-columns: 1fr 1fr; }
+/* Dark pill button */
+.pillar-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.7rem 1.4rem;
+  background: rgba(0,0,0,0.80);
+  color: #fff;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: background 0.2s ease;
+  align-self: flex-start;
+  margin-top: auto;
+  white-space: nowrap;
 }
-@media (max-width: 520px) {
-  .what-grid { grid-template-columns: 1fr; }
+.pillar-btn:hover { background: rgba(0,0,0,0.95); color: #fff; }
+
+@media (max-width: 820px) {
+  .pillars-grid { grid-template-columns: 1fr; }
+  .pillar-card  { min-height: unset; }
 }
 
 /* ===== CTA STRIP ===== */
@@ -396,7 +518,7 @@ body:has(.hero) main { padding-top: 0; }
   margin: 0 auto 1.5rem;
   line-height: 1.05;
 }
-.cta-strip h2 em { font-style: italic; color: var(--deep-rose); }
+.cta-strip h2 em { font-style: italic; color: var(--rose); }
 .cta-strip p {
   font-size: 1.625rem;
   color: var(--text-muted);
@@ -404,13 +526,214 @@ body:has(.hero) main { padding-top: 0; }
   margin: 0 auto 2rem;
   font-weight: 300;
 }
+.cta-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ===== OFFICER SCATTER ===== */
+.officers-scatter {
+  background: var(--white);
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 5rem);
+}
+.scatter-wrap {
+  position: relative;
+  max-width: 1100px;
+  margin: 0 auto;
+  min-height: 580px;
+}
+.scatter-header {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+  pointer-events: none;
+  width: 320px;
+}
+.scatter-header h2 {
+  font-size: clamp(2rem, 3.5vw, 3.25rem);
+  line-height: 1.1;
+  margin-bottom: 0.75rem;
+}
+.scatter-header p {
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  color: var(--text-muted);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+/* Each officer pin — positioned anchor */
+.officer-pin {
+  position: absolute;
+  left: var(--ox);
+  top: var(--oy);
+  z-index: 3;
+}
+.officer-pin:hover { z-index: 20; }
+.officer-pin:focus-within { z-index: 20; }
+
+/* Focusable photo button */
+.officer-photo-btn {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+.officer-photo-btn:focus { outline: none; }
+.officer-photo-btn:focus-visible .officer-img,
+.officer-photo-btn:focus-visible .officer-photo-placeholder {
+  outline: 3px solid var(--rose);
+  outline-offset: 3px;
+}
+
+/* Photo / placeholder shared styles */
+.officer-img,
+.officer-photo-placeholder {
+  width: var(--os, 145px);
+  height: var(--os, 145px);
+  border-radius: 18px;
+  object-fit: cover;
+  object-position: top center;
+  transform: rotate(var(--or, 0deg));
+  box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+  transition: box-shadow 0.25s ease;
+  display: block;
+}
+.officer-photo-btn:hover .officer-img,
+.officer-photo-btn:focus .officer-img,
+.officer-photo-btn:hover .officer-photo-placeholder,
+.officer-photo-btn:focus .officer-photo-placeholder {
+  box-shadow: 0 12px 36px rgba(0,0,0,0.2);
+}
+
+/* Placeholder = initial letter in rose box */
+.officer-photo-placeholder {
+  background: var(--rose-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: 2.75rem;
+  font-weight: 400;
+  color: var(--rose);
+}
+
+/* Info card — hidden until hover/focus/tap */
+.officer-info-card {
+  position: absolute;
+  background: #fff;
+  border: 1px solid var(--rose-100);
+  border-radius: 14px;
+  padding: 1rem 1.2rem;
+  width: 195px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.10);
+  opacity: 0;
+  transform: scale(0.9) translateY(6px);
+  transition: opacity 0.22s ease, transform 0.22s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+.officer-info-card strong {
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 0.15rem;
+}
+.officer-info-card .card-role {
+  display: block;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rose);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+.officer-info-card .card-bio {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+/* Show card on hover / focus-within / .card-open (touch tap) */
+.officer-pin:hover .officer-info-card,
+.officer-pin:focus-within .officer-info-card,
+.officer-pin.card-open .officer-info-card {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+/* Card anchor positions based on quadrant — keeps card inside viewport */
+.pin-tl .officer-info-card { top: 0; left: calc(100% + 14px); }
+.pin-tr .officer-info-card { top: 0; right: calc(100% + 14px); }
+.pin-bl .officer-info-card { bottom: 0; left: calc(100% + 14px); }
+.pin-br .officer-info-card { bottom: 0; right: calc(100% + 14px); }
+
+/* Mobile: collapse to 2×2 grid, cards always visible */
+@media (max-width: 820px) {
+  .scatter-wrap {
+    min-height: unset;
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+  .scatter-header {
+    position: static;
+    transform: none;
+    width: 100%;
+    text-align: left;
+  }
+  .officers-mobile-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    width: 100%;
+  }
+  .officer-pin {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .officer-img,
+  .officer-photo-placeholder {
+    width: 100% !important;
+    height: 160px !important;
+    transform: none !important;
+    border-radius: 14px;
+  }
+  .officer-info-card {
+    position: static;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto;
+    width: 100%;
+    box-shadow: none;
+  }
+}
+@media (max-width: 560px) {
+  .officers-mobile-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Women's Health Advocacy</a>
+    <a href="index.html" class="nav-logo"><img src="WHALogoNoBackground.png" alt="WHA Logo" class="nav-logo-img" />Women's Health Advocacy Club</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -427,93 +750,54 @@ body:has(.hero) main { padding-top: 0; }
 <main>
 
   <!-- HERO -->
-  <section class="hero grain" id="top">
-    <div class="hero-grid">
-      <div class="hero-text">
-        <h1 class="fade-up d1">Women deserve to be <em>believed.</em></h1>
-        <p class="lead fade-up d2">We're a student club fighting the research gaps, diagnostic delays, and stigma that define women's healthcare. We meet weekly. We make noise.</p>
-        <div class="hero-ctas fade-up d3">
-          <a href="contact.html" class="btn btn-filled">Join the Club</a>
-          <a href="#what" class="btn btn-outline">See What We Do</a>
-        </div>
-        <div class="hero-meta fade-up d4">
-          <div class="hero-meta-item">
-            <span class="hero-fact">Est. 2026 · Westview High School</span>
-          </div>
-          <div class="hero-divider-vert"></div>
-          <div class="hero-meta-item">
-            <span class="hero-fact">Mondays at Lunch · Room P101</span>
-          </div>
-        </div>
-      </div>
+  <section class="hero" id="top">
 
-      <div class="hero-photo-wrap fade-up d2">
-        <div class="hero-photo-frame">
-          <img src="images/Dasha_Lisa.png" alt="Lisa Borowik and Daria Gavrushin, Co-Presidents" />
-        </div>
-        <p class="hero-photo-caption">Daria Gavrushin &amp; Lisa Borowik · Co-Presidents</p>
+    <!-- Carousel slides -->
+    <div class="hero-slides" aria-hidden="true">
+      <img class="hero-slide active" src="bruh1.jpeg" alt="">
+      <img class="hero-slide" src="bruh2.jpeg" alt="">
+      <img class="hero-slide" src="bruh3.jpeg" alt="">
+    </div>
+
+    <!-- Left-to-right gradient overlay for text legibility -->
+    <div class="hero-overlay" aria-hidden="true"></div>
+
+    <!-- Dot indicators -->
+    <div class="hero-indicators" role="tablist" aria-label="Hero image carousel">
+      <button class="hero-dot active" role="tab" aria-selected="true" data-index="0" aria-label="Image 1"></button>
+      <button class="hero-dot" role="tab" aria-selected="false" data-index="1" aria-label="Image 2"></button>
+      <button class="hero-dot" role="tab" aria-selected="false" data-index="2" aria-label="Image 3"></button>
+    </div>
+
+    <!-- Headline + CTA anchored to bottom-left -->
+    <div class="hero-content">
+      <h1 class="hero-headline fade-up d1">
+        <span class="hl-serif" style="margin-bottom: 0.4em;">Westview's loudest club for</span>
+        <em class="hl-script">women's health.</em>
+      </h1>
+      <p class="hero-lead fade-up d2">We are Westview High School's only student club fighting research gaps and stigma that pervade women's healthcare. We meet every Monday in room A104.</p>
+      <div class="hero-ctas fade-up d3">
+        <a href="contact.html" class="btn-hero-filled">Join the Club</a>
+        <a href="#what" class="btn-hero-outline">See What We Do</a>
       </div>
     </div>
+
   </section>
 
   <hr class="rose-divider" />
 
-  <!-- PURPOSE + WHO WE ARE -->
-  <section class="purpose" id="purpose">
-    <div class="container purpose-grid">
-      <div>
-        <h2>Why we <em>exist.</em></h2>
-        <ul class="problem-list">
-          <li>
-            <strong>Women's health is chronically underfunded.</strong>
-            <p>Conditions affecting millions of patients receive a fraction of the research dollars given to comparable conditions in men.</p>
-          </li>
-          <li>
-            <strong>Symptoms are routinely dismissed by medical professionals.</strong>
-            <p>Pain reports are downgraded, anxiety diagnoses substitute for physical ones, and patients wait years for answers.</p>
-          </li>
-          <li>
-            <strong>Stigma silences patients and slows progress.</strong>
-            <p>The taboos around reproductive and menstrual health keep families, classrooms, and clinics from talking openly.</p>
-          </li>
-        </ul>
-      </div>
+  <!-- STATEMENT CARD -->
+  <div class="statement-wrap">
+    <div class="statement-card">
+      <img class="statement-card__bg" src="hospital.jpg" alt="">
+      <div class="statement-card__overlay"></div>
+      <div class="statement-card__text">
+        <h2 class="statement-card__headline">Endometriosis takes an average of seven to ten years to diagnose.</h2>
+        <p class="statement-card__body">That's why we're fighting the delays, dismissal, and stigma that keep women waiting for answers about their own bodies.</p>
 
-      <aside class="who-card">
-        <h3>We are a student-run advocacy organization at Westview High School.</h3>
-        <div class="officer-grid">
-          <div class="officer">
-            <div class="officer-avatar"><img src="images/LisaB.png" alt="Lisa Borowik" /></div>
-            <div>
-              <div class="officer-name">Lisa Borowik</div>
-              <div class="officer-role">Co-President</div>
-            </div>
-          </div>
-          <div class="officer">
-            <div class="officer-avatar"><img src="images/Dasha.png" alt="Daria Gavrushin" /></div>
-            <div>
-              <div class="officer-name">Daria Gavrushin</div>
-              <div class="officer-role">Co-President</div>
-            </div>
-          </div>
-          <div class="officer">
-            <div class="officer-avatar"><img src="images/Audrey.png" alt="Audrey Castro" /></div>
-            <div>
-              <div class="officer-name">Audrey Castro</div>
-              <div class="officer-role">Vice President</div>
-            </div>
-          </div>
-          <div class="officer">
-            <div class="officer-avatar"><img src="images/Madelyn.png" alt="Madelyn Char" /></div>
-            <div>
-              <div class="officer-name">Madelyn Char</div>
-              <div class="officer-role">Secretary</div>
-            </div>
-          </div>
-        </div>
-      </aside>
+      </div>
     </div>
-  </section>
+  </div>
 
   <hr class="rose-divider" />
 
@@ -521,39 +805,65 @@ body:has(.hero) main { padding-top: 0; }
   <section class="what" id="what">
     <div class="container">
       <div class="what-head">
-        <div>
-          <h2>Four ways the club <em>moves the needle.</em></h2>
-        </div>
+        <h2 style="text-align:center;color:#1A1A1A;">Our Solutions.</h2>
       </div>
 
-      <div class="what-grid">
-        <article class="activity">
-          <div class="activity-icon icon-meet"></div>
-          <span class="num">01</span>
-          <h3>Weekly Meetings</h3>
-          <p>An Educate &#8594; Discuss &#8594; Create cycle every week. Members rotate who leads, so everyone teaches at least once per quarter.</p>
+      <div class="pillars-grid">
+
+        <!-- Card 1: Weekly Meetings — Rose -->
+        <article class="pillar-card card-rose">
+          <div class="pillar-icon">
+            <!-- Cycle/loop icon: circular arrow suggesting Educate→Discuss→Create -->
+            <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M40 14C36 10 30.5 7.5 24.5 8C14 8.5 6 17 6 27C6 37.5 14.5 46 25 46C33.5 46 40.5 41 43.5 33.5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+              <polyline points="40,7 40,14 47,14" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="18" cy="27" r="2.5" fill="white"/>
+              <circle cx="26" cy="27" r="2.5" fill="white"/>
+              <circle cx="34" cy="27" r="2.5" fill="white"/>
+            </svg>
+          </div>
+          <div class="pillar-text">
+            <h3>Weekly Meetings</h3>
+            <p>An <strong>Educate → Discuss → Create</strong> cycle every week. Members rotate who leads, so everyone teaches at least once per quarter.</p>
+          </div>
         </article>
 
-        <article class="activity">
-          <div class="activity-icon icon-pamphlet"></div>
-          <span class="num">02</span>
-          <h3>Quarterly Pamphlets</h3>
-          <p>A printed take-home each quarter on a focused topic. Distributed to classrooms, clinics, and parent networks.</p>
+        <!-- Card 2: Quarterly Pamphlets — Amber -->
+        <article class="pillar-card card-amber">
+          <div class="pillar-icon">
+            <!-- Tri-fold pamphlet icon -->
+            <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="5" y="11" width="13" height="30" rx="2.5" stroke="white" stroke-width="2.5"/>
+              <rect x="20" y="11" width="13" height="30" rx="2.5" stroke="white" stroke-width="2.5"/>
+              <rect x="35" y="11" width="12" height="30" rx="2.5" stroke="white" stroke-width="2.5"/>
+              <line x1="23" y1="20" x2="30" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <line x1="23" y1="26" x2="30" y2="26" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              <line x1="23" y1="32" x2="30" y2="32" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="pillar-text">
+            <h3>Quarterly Pamphlets</h3>
+            <p>A printed take-home each quarter on a focused topic. Distributed to <strong>classrooms, clinics, and parent networks</strong>.</p>
+          </div>
         </article>
 
-        <article class="activity">
-          <div class="activity-icon icon-speaker"></div>
-          <span class="num">03</span>
-          <h3>Guest Speakers</h3>
-          <p>OB-GYNs, researchers, and patient advocates join our meetings. Sessions are recorded and posted to Resources.</p>
+        <!-- Card 3: Guest Speakers — Deep rose -->
+        <article class="pillar-card card-rose-deep">
+          <div class="pillar-icon">
+            <!-- Microphone icon -->
+            <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="18" y="7" width="16" height="22" rx="8" stroke="white" stroke-width="2.5"/>
+              <path d="M10 28C10 39 42 39 42 28" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="26" y1="39" x2="26" y2="46" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="17" y1="46" x2="35" y2="46" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="pillar-text">
+            <h3>Guest<br>Speakers</h3>
+            <p><strong>OB-GYNs, researchers, and patient advocates</strong> join our meetings. Sessions are recorded and posted to Resources.</p>
+          </div>
         </article>
 
-        <article class="activity">
-          <div class="activity-icon icon-partner"></div>
-          <span class="num">04</span>
-          <h3>Institutional Partnerships</h3>
-          <p>We work with school administration and local nonprofits to translate findings into policy proposals and curriculum updates.</p>
-        </article>
       </div>
     </div>
   </section>
@@ -561,7 +871,7 @@ body:has(.hero) main { padding-top: 0; }
   <!-- CTA STRIP -->
   <section class="cta-strip">
     <h2>Ready to <em>get involved?</em></h2>
-    <div class="hero-ctas" style="justify-content:center;">
+    <div class="cta-btns">
       <a href="contact.html" class="btn btn-filled">Reach an Officer</a>
       <a href="resources.html" class="btn btn-outline">Browse Resources</a>
     </div>
@@ -579,15 +889,16 @@ body:has(.hero) main { padding-top: 0; }
       <div>&#169; 2026 Women's Health Advocacy</div>
       <div style="margin-top:6px;">
         <a href="contact.html">Contact</a>
-        <a href="admin.html">Admin</a>
+        <a href="admin/index.html">Admin</a>
       </div>
     </div>
   </div>
 </footer>
 
+<script src="data.js"></script>
 <script src="nav.js"></script>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <script>
+  // ---- Netlify Identity ----
   if (window.netlifyIdentity) {
     window.netlifyIdentity.on("init", user => {
       if (!user) {
@@ -597,11 +908,65 @@ body:has(.hero) main { padding-top: 0; }
       }
     });
   }
-
-  // Handle invite/recovery tokens in URL hash
   if (window.location.hash && window.location.hash.includes('invite_token')) {
     window.netlifyIdentity && window.netlifyIdentity.open();
   }
+</script>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+(function () {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots   = document.querySelectorAll('.hero-dot');
+  let current  = 0;
+  let timer;
+
+  function goTo(index) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    dots[current].setAttribute('aria-selected', 'false');
+    current = index;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    dots[current].setAttribute('aria-selected', 'true');
+  }
+
+  function next() { goTo((current + 1) % slides.length); }
+
+  function startTimer() {
+    clearInterval(timer);
+    timer = setInterval(next, 5000);
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      goTo(Number(dot.dataset.index));
+      startTimer();
+    });
+  });
+
+  startTimer();
+})();
+</script>
+<script>
+// Officer scatter — touch tap toggle + mobile grid reflow
+(function () {
+  const pins = document.querySelectorAll('.officer-pin');
+
+  // Touch/click toggle: tap photo opens card, tap elsewhere closes
+  pins.forEach(pin => {
+    const btn = pin.querySelector('.officer-photo-btn');
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const isOpen = pin.classList.contains('card-open');
+      pins.forEach(p => p.classList.remove('card-open'));
+      if (!isOpen) pin.classList.add('card-open');
+    });
+  });
+  document.addEventListener('click', () => {
+    pins.forEach(p => p.classList.remove('card-open'));
+  });
+
+})();
 </script>
 </body>
 </html>

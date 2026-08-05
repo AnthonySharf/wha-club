@@ -2,8 +2,8 @@ backend:
   name: git-gateway
   branch: main
 
-media_folder: "images"
-public_folder: "/images"
+media_folder: "images/covers"
+public_folder: "/images/covers"
 
 collections:
   - name: "resources"
@@ -17,6 +17,7 @@ collections:
       - { label: "Type", name: "type", widget: "select", options: ["Slides", "Video"] }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Link URL", name: "link", widget: "string" }
+      - { label: "Cover Image", name: "image", widget: "image", required: false, hint: "Optional — shown at the top of the resource card." }
 
   - name: "articles"
     label: "Articles"
@@ -29,3 +30,4 @@ collections:
       - { label: "Type", name: "type", widget: "select", options: ["Study", "Podcast", "Article", "Other"] }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Link URL", name: "link", widget: "string" }
+      - { label: "Cover Image", name: "image", widget: "image", required: false, hint: "Optional — shown at the top of the article card." }

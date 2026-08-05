@@ -7,7 +7,7 @@
 <meta name="description" content="Slides, videos, and reading material from WHA meetings and guest speakers." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 <style>
 /* ===== ADMIN BANNER ===== */
@@ -152,6 +152,16 @@
 }
 .resource-card-link:hover { gap: 10px; color: var(--primary-rose); }
 
+/* Cover image — full-bleed at top of card */
+.card-cover {
+  width: calc(100% + 72px);
+  margin: -36px -36px 20px -36px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 14px 14px 0 0;
+  display: block;
+}
+
 /* Type icon */
 .type-icon {
   width: 48px; height: 48px;
@@ -180,19 +190,11 @@
 </head>
 <body>
 
-<!-- Admin banner (dismissible) -->
-<div class="admin-banner" id="adminBanner" role="status" aria-label="Admin notice">
-  <div class="admin-banner-left">
-    <div class="admin-banner-icon" aria-hidden="true">★</div>
-    <span>Officer access — add or remove resources via the <a href="admin/index.html">CMS</a>. New entries appear here automatically after the GitHub commit lands.</span>
-  </div>
-  <button class="admin-banner-close" id="adminBannerClose" aria-label="Dismiss banner">&times;</button>
-</div>
 
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Women's Health Advocacy</a>
+    <a href="index.html" class="nav-logo"><img src="WHALogoNoBackground.png" alt="WHA Logo" class="nav-logo-img" />Women's Health Advocacy Club</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -208,11 +210,6 @@
 
 <main>
 
-  <header class="page-header fade-up">
-    <div class="container">
-      <h1>Slides, videos, &amp; <em>reading.</em></h1>
-    </div>
-  </header>
 
   <section class="resources-section">
     <div class="container">
@@ -356,11 +353,12 @@
       const card = document.createElement('article');
       card.className = 'resource-card';
       card.innerHTML = `
+        ${r.image ? `<img class="card-cover" src="${esc(r.image)}" alt="${esc(r.title)}">` : ''}
         <div class="resource-card-top">
           <span class="badge badge-line">${esc(r.type)}</span>
           <span class="resource-date">${esc(r.date)}</span>
         </div>
-        <div class="type-icon" aria-hidden="true">${iconFor(r.type)}</div>
+        ${!r.image ? `<div class="type-icon" aria-hidden="true">${iconFor(r.type)}</div>` : ''}
         <h3>${esc(r.title)}</h3>
         <p>${esc(r.description)}</p>
         <a class="resource-card-link" href="${esc(r.link || '#')}" target="_blank" rel="noopener">

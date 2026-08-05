@@ -7,7 +7,7 @@
 <meta name="description" content="Studies, podcasts, and articles curated by club members on women's health and healthcare equity." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 <style>
 /* ===== FILTER BAR ===== */
@@ -107,11 +107,21 @@
 }
 .article-card-link:hover { gap: 10px; color: var(--primary-rose); }
 
+/* Cover image — full-bleed at top of card */
+.card-cover {
+  width: calc(100% + 72px);
+  margin: -36px -36px 20px -36px;
+  height: 190px;
+  object-fit: cover;
+  border-radius: 14px 14px 0 0;
+  display: block;
+}
+
 /* Type pill colors */
-.badge-study  { background: #FDE8EE; color: #7a1a3a; }
-.badge-podcast { background: #EDE8FD; color: #3a1a7a; }
-.badge-article { background: #E8F4FD; color: #1a3a7a; }
-.badge-report  { background: #E8FDE8; color: #1a5a1a; }
+.badge-study   { background: #FDE8EE; color: #7a1a3a; }
+.badge-podcast { background: #FDF0E2; color: #7a3a0a; }
+.badge-article { background: #FDE8EE; color: #6b1530; }
+.badge-report  { background: #FAE4D0; color: #7a3a0a; }
 
 .empty-state {
   grid-column: 1 / -1;
@@ -155,7 +165,7 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Women's Health Advocacy</a>
+    <a href="index.html" class="nav-logo"><img src="WHALogoNoBackground.png" alt="WHA Logo" class="nav-logo-img" />Women's Health Advocacy Club</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -171,11 +181,6 @@
 
 <main>
 
-  <header class="page-header fade-up">
-    <div class="container">
-      <h1>The research behind <em>the work.</em></h1>
-    </div>
-  </header>
 
   <section class="articles-section">
     <div class="container">
@@ -190,14 +195,6 @@
         <!-- Populated by JS -->
       </div>
 
-      <!-- Suggest callout -->
-      <div class="suggest-callout">
-        <div>
-          <h3>Found something <em>worth sharing?</em></h3>
-          <p>Send a link to any officer and we'll review it for inclusion in the next update.</p>
-        </div>
-        <a href="contact.html" class="btn btn-filled">Suggest a Source</a>
-      </div>
 
     </div>
   </section>
@@ -319,6 +316,7 @@
       const card = document.createElement('article');
       card.className = 'article-card';
       card.innerHTML = `
+        ${a.image ? `<img class="card-cover" src="${esc(a.image)}" alt="${esc(a.title)}">` : ''}
         <div class="article-card-top">
           <span class="article-source">${esc(a.source)}</span>
           <span class="badge ${badgeClass(a.type)}">${esc(a.type)}</span>

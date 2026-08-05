@@ -7,7 +7,7 @@
 <meta name="description" content="Reach an officer or let us know you're interested in joining Women's Health Advocacy at Westview High School." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&family=DM+Serif+Display:ital@0;1&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 <style>
 /* ===== CONTACT LAYOUT ===== */
@@ -16,13 +16,12 @@
   padding: 80px 80px 120px;
 }
 .contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: start;
-}
-@media (max-width: 860px) {
-  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto;
 }
 
 /* ===== CONTACT METHODS ===== */
@@ -30,6 +29,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
 }
 .contact-method {
   background: var(--blush);
@@ -232,7 +232,7 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">Women's Health Advocacy</a>
+    <a href="index.html" class="nav-logo"><img src="WHALogoNoBackground.png" alt="WHA Logo" class="nav-logo-img" />Women's Health Advocacy Club</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -248,19 +248,13 @@
 
 <main>
 
-  <header class="page-header fade-up">
-    <div class="container">
-      <h1>Reach an <em>officer.</em></h1>
-    </div>
-  </header>
 
   <section class="contact-section">
     <div class="container contact-grid">
 
       <!-- Left: contact methods -->
       <div>
-        <span class="eyebrow">Get in Touch</span>
-        <div class="contact-methods" style="margin-top: 24px;">
+        <div class="contact-methods">
 
           <!-- Email -->
           <div class="contact-method">
@@ -286,56 +280,13 @@
 
         </div>
 
-        <p class="contact-note">
-          We meet every Monday at lunch in Room P101 — stop by anytime.
-        </p>
-
-        <!-- Officers -->
+<!-- Officers -->
         <div style="margin-top: 40px;">
           <span class="eyebrow">Officers</span>
           <div id="officerList" style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px;"></div>
         </div>
       </div>
 
-      <!-- Right: interest form -->
-      <div>
-        <div class="form-card">
-          <h2>Express <em>interest.</em></h2>
-          <p class="form-desc">Fill this out and we'll add you to our mailing list and let you know about upcoming meetings.</p>
-
-          <form id="interestForm" novalidate>
-            <div class="field">
-              <label for="fname">Full Name</label>
-              <input type="text" id="fname" name="fname" placeholder="Your name" required autocomplete="name" />
-            </div>
-            <div class="field">
-              <label for="email">School Email</label>
-              <input type="email" id="email" name="email" placeholder="you@students.puhsd.org" required autocomplete="email" />
-            </div>
-            <div class="field">
-              <label for="grade">Grade</label>
-              <select id="grade" name="grade" required>
-                <option value="" disabled selected>Select your grade</option>
-                <option value="9">9th Grade</option>
-                <option value="10">10th Grade</option>
-                <option value="11">11th Grade</option>
-                <option value="12">12th Grade</option>
-              </select>
-            </div>
-            <div class="field">
-              <label for="interest">What draws you to WHA? <span style="font-weight:300;text-transform:none;letter-spacing:0;">(optional)</span></label>
-              <textarea id="interest" name="interest" placeholder="A topic you care about, a question you have, anything..."></textarea>
-            </div>
-            <button type="submit" class="form-submit" id="formSubmit">Send Interest</button>
-          </form>
-
-          <div class="form-success" id="formSuccess">
-            <div class="form-success-icon" aria-hidden="true">&#10003;</div>
-            <h3>You're on the list.</h3>
-            <p>We'll send meeting details your way. See you soon.</p>
-          </div>
-        </div>
-      </div>
 
     </div>
   </section>

@@ -2,6 +2,17 @@
 // Edit this file to add/remove resources or articles.
 
 window.WHA_DATA = {
+
+  // Hero carousel images — drop real photos at these exact paths.
+  // Minimum 1920×1080px (landscape 16:9). Full-bleed WHA officer or club event photos.
+  // The carousel cycles through all entries every 5 seconds.
+  heroImages: [
+    "/images/hero/officer-event-1.jpg",
+    "/images/hero/officer-event-2.jpg",
+    "/images/hero/officer-event-3.jpg",
+    "/images/hero/officer-event-4.jpg"
+  ],
+
   resources: [
     {
       title: "Endometriosis: What the Research Misses",
@@ -50,10 +61,32 @@ window.WHA_DATA = {
     }
   ],
 
+  // Officers — used by the scatter gallery on the homepage.
+  // Replace placeholder bios and photos before launch.
   officers: [
-    { name: "Lisa Borowik",     role: "Co-President",  photo: "images/LisaB.png" },
-    { name: "Daria Gavrushin",  role: "Co-President",  photo: "images/Dasha.png" },
-    { name: "Audrey Castro",    role: "Vice President", photo: "images/Audrey.png" },
-    { name: "Madelyn Char",     role: "Secretary",      photo: "images/Madelyn.png" }
+    {
+      name: "Lisa Borowik",
+      role: "Co-President",
+      photo: "images/LisaB.png",
+      bio: "PLACEHOLDER: Replace with real bio."
+    },
+    {
+      name: "Daria Gavrushin",
+      role: "Co-President",
+      photo: "images/Dasha.png",
+      bio: "PLACEHOLDER: Replace with real bio."
+    },
+    {
+      name: "Audrey Castro",
+      role: "Vice President",
+      photo: null, // PLACEHOLDER: add photo path when ready
+      bio: "PLACEHOLDER: Replace with real bio."
+    },
+    {
+      name: "Madelyn Char",
+      role: "Secretary",
+      photo: null, // PLACEHOLDER: add photo path when ready
+      bio: "PLACEHOLDER: Replace with real bio."
+    }
   ]
 };
