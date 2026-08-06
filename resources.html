@@ -250,6 +250,17 @@
 <script src="nav.js"></script>
 <script>
 (function () {
+  // Admin banner dismiss
+  const banner = document.getElementById('adminBanner');
+  const bannerClose = document.getElementById('adminBannerClose');
+  if (sessionStorage.getItem('adminBannerDismissed')) {
+    banner.classList.add('hidden');
+  }
+  bannerClose.addEventListener('click', () => {
+    banner.classList.add('hidden');
+    sessionStorage.setItem('adminBannerDismissed', '1');
+  });
+
   // ── Helpers ──────────────────────────────────────────────────────────────
   const typeEmoji = { Slides: '📊', Video: '▶', Pamphlet: '📄', Reading: '📖', Link: '🔗' };
   function iconFor(type) { return typeEmoji[type] || '📎'; }
@@ -279,7 +290,7 @@
   }
 
   // ── Data fetching ─────────────────────────────────────────────────────────
-  const CONTENTS_API = 'https://api.github.com/repos/AnthonySharf/wha-westview/contents/_data/resources';
+  const CONTENTS_API = 'https://api.github.com/repos/AnthonySharf/wha-club/contents/_data/resources';
   const grid = document.getElementById('resourceGrid');
   const filterBar = document.getElementById('filterBar');
   let resources = [];
