@@ -777,7 +777,7 @@ body:has(.hero) main { padding-top: 0; }
       </h1>
       <p class="hero-lead fade-up d2">We are Westview High School's only student club fighting research gaps and stigma that pervade women's healthcare. We meet every Monday in room A104.</p>
       <div class="hero-ctas fade-up d3">
-        <a href="contact.html" class="btn-hero-filled">Join the Club</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSfdk6yHtxB3qOSlcVRYQVsfjANQEwydhUGAqrOZ_GFcasMMnw/viewform?usp=header" target="_blank" rel="noopener" class="btn-hero-filled">Join the Club</a>
         <a href="#what" class="btn-hero-outline">See What We Do</a>
       </div>
     </div>
@@ -966,6 +966,56 @@ body:has(.hero) main { padding-top: 0; }
     pins.forEach(p => p.classList.remove('card-open'));
   });
 
+})();
+</script>
+
+<!-- ===== JOIN POPUP ===== -->
+<div id="joinPopupBackdrop" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:900;" aria-hidden="true"></div>
+<div id="joinPopup" role="dialog" aria-modal="true" aria-labelledby="joinPopupTitle" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:901;width:min(700px,calc(100vw - 48px));background:var(--white);border-radius:28px;box-shadow:0 24px 80px rgba(0,0,0,0.22);padding:72px 68px 64px;border:1px solid var(--rose-100);">
+  <button id="joinPopupClose" aria-label="Dismiss" style="position:absolute;top:20px;right:24px;background:transparent;border:0;font-size:32px;line-height:1;cursor:pointer;color:var(--text-soft);padding:4px 8px;border-radius:6px;transition:color 0.2s;">&times;</button>
+  <p style="font-size:13px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--rose);margin-bottom:14px;">Get Involved</p>
+  <h2 id="joinPopupTitle" style="font-family:'Fraunces',serif;font-weight:400;font-size:2.8rem;line-height:1.15;color:var(--text);margin-bottom:16px;">Women's healthcare<br>needs your voice.</h2>
+  <p style="font-size:1.25rem;color:var(--text-muted);font-weight:300;line-height:1.6;margin-bottom:40px;">We meet Mondays in A104. Fill out the interest form and an officer will follow up.</p>
+  <a id="joinPopupBtn" href="https://docs.google.com/forms/d/e/1FAIpQLSfdk6yHtxB3qOSlcVRYQVsfjANQEwydhUGAqrOZ_GFcasMMnw/viewform?usp=header" target="_blank" rel="noopener" style="display:block;text-align:center;padding:20px 40px;background:var(--rose);color:var(--white);border-radius:999px;font-family:'DM Sans',sans-serif;font-size:1.2rem;font-weight:600;text-decoration:none;transition:background 0.2s,transform 0.2s;">Join the Club &rarr;</a>
+</div>
+<script>
+(function () {
+  const STORAGE_KEY = 'joinPopupDismissed';
+  if (sessionStorage.getItem(STORAGE_KEY)) return;
+
+  const backdrop = document.getElementById('joinPopupBackdrop');
+  const popup    = document.getElementById('joinPopup');
+  const closeBtn = document.getElementById('joinPopupClose');
+  const joinBtn  = document.getElementById('joinPopupBtn');
+
+  function show() {
+    backdrop.style.display = '';
+    popup.style.display = '';
+    popup.removeAttribute('aria-hidden');
+    backdrop.removeAttribute('aria-hidden');
+    closeBtn.focus();
+  }
+
+  function dismiss() {
+    backdrop.style.display = 'none';
+    popup.style.display = 'none';
+    sessionStorage.setItem(STORAGE_KEY, '1');
+  }
+
+  setTimeout(show, 4000);
+
+  closeBtn.addEventListener('click', dismiss);
+  backdrop.addEventListener('click', dismiss);
+  joinBtn.addEventListener('click', dismiss);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && popup.style.display !== 'none') dismiss();
+  });
+
+  closeBtn.addEventListener('mouseenter', () => { closeBtn.style.color = 'var(--text)'; });
+  closeBtn.addEventListener('mouseleave', () => { closeBtn.style.color = 'var(--text-soft)'; });
+  joinBtn.addEventListener('mouseenter',  () => { joinBtn.style.background = 'var(--rose-800)'; joinBtn.style.transform = 'translateY(-1px)'; });
+  joinBtn.addEventListener('mouseleave',  () => { joinBtn.style.background = 'var(--rose)';     joinBtn.style.transform = ''; });
 })();
 </script>
 </body>

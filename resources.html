@@ -250,17 +250,6 @@
 <script src="nav.js"></script>
 <script>
 (function () {
-  // Admin banner dismiss
-  const banner = document.getElementById('adminBanner');
-  const bannerClose = document.getElementById('adminBannerClose');
-  if (sessionStorage.getItem('adminBannerDismissed')) {
-    banner.classList.add('hidden');
-  }
-  bannerClose.addEventListener('click', () => {
-    banner.classList.add('hidden');
-    sessionStorage.setItem('adminBannerDismissed', '1');
-  });
-
   // ── Helpers ──────────────────────────────────────────────────────────────
   const typeEmoji = { Slides: '📊', Video: '▶', Pamphlet: '📄', Reading: '📖', Link: '🔗' };
   function iconFor(type) { return typeEmoji[type] || '📎'; }
