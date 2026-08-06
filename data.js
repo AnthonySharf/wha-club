@@ -76,17 +76,5 @@ window.WHA_DATA = {
       photo: "images/Dasha.png",
       bio: "PLACEHOLDER: Replace with real bio."
     },
-    {
-      name: "Audrey Castro",
-      role: "Vice President",
-      photo: null, // PLACEHOLDER: add photo path when ready
-      bio: "PLACEHOLDER: Replace with real bio."
-    },
-    {
-      name: "Madelyn Char",
-      role: "Secretary",
-      photo: null, // PLACEHOLDER: add photo path when ready
-      bio: "PLACEHOLDER: Replace with real bio."
-    }
   ]
 };
