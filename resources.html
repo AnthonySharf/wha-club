@@ -251,15 +251,18 @@
 <script>
 (function () {
   // Admin banner dismiss
+  // Admin banner dismiss
   const banner = document.getElementById('adminBanner');
   const bannerClose = document.getElementById('adminBannerClose');
-  if (sessionStorage.getItem('adminBannerDismissed')) {
-    banner.classList.add('hidden');
+  if (banner && bannerClose) {
+    if (sessionStorage.getItem('adminBannerDismissed')) {
+      banner.classList.add('hidden');
+    }
+    bannerClose.addEventListener('click', () => {
+      banner.classList.add('hidden');
+      sessionStorage.setItem('adminBannerDismissed', '1');
+    });
   }
-  bannerClose.addEventListener('click', () => {
-    banner.classList.add('hidden');
-    sessionStorage.setItem('adminBannerDismissed', '1');
-  });
 
   // ── Helpers ──────────────────────────────────────────────────────────────
   const typeEmoji = { Slides: '📊', Video: '▶', Pamphlet: '📄', Reading: '📖', Link: '🔗' };
