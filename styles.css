@@ -453,3 +453,9 @@ section { padding: clamp(3rem, 8vw, 7.5rem) clamp(1.5rem, 5vw, 5rem); }
   color: var(--rose);
   margin-bottom: 1rem;
 }
+
+@media (max-width: 600px) {
+  .nav-logo-text {
+    display: none;
+  }
+}
