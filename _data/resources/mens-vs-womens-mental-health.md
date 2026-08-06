@@ -1,6 +1,6 @@
 ---
-title: Men's vs. Women's Mental Health
+title: Introduction Slides
 type: Slides
-link: https://canva.link/234y3pokt4qmqhd
-image: /images/covers/mental-health.png
+link: https://canva.link/dtde2covlb98pkt
+image: /images/covers/wha.png
 ---
